@@ -7,7 +7,70 @@
     <style>
         .container{
             text-align: center;
+            max-width: 600px;
+            margin: 60px auto;
+            background-color :#708090;
+            color:black ;
+            padding: 60px;
+            border-radius: 10px;
         }
+body{ background-color: #001f3f ;
+}
+select{
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    color: white;
+    background-color: #001f3f;
+    
+}
+h1{
+    font-size: 44px;
+    font-family: 'Times New Roman', Times, serif;}
+.city-time-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.city h2 {
+    margin:20px auto;
+    font-size: 32px;
+    text-align: start;
+    padding: 0px;
+    
+}
+
+.time {
+    font-size: 48px;
+    font-weight: bold;
+    text-align: end;
+    margin: auto;
+    position: relative;
+bottom: 80px;
+}
+
+.time small {
+    font-size: 14px;
+    vertical-align: middle;
+    
+}
+
+
+.date{opacity: 0.5;
+text-align: end;
+position: relative;
+bottom: 15px;
+    
+border-bottom: 1px dashed rgba(0, 0, 0, 0.2);
+}
+.hidden{
+    text-align: end;
+    position: relative;
+    left: -15px;
+}
     </style>
 </head>
 <body>
@@ -16,21 +79,36 @@
     <select>
         <option value="">Select a city</option>
         <option value="">London</option>
-        <option value="New York"></option>
-        <option value="Auck Land"></option>
+        <option value="">New York</option>
+        <option value="">Auck Land</option>
     </select>
     <div class="city">
         <h2>Los Angeles 🇺🇸 </h2>
+    
     </div>
-    <div class="date">August 25, 2024</div>
-    <div class="time"> 10:20 Am</div>
+    <div class="date"> <div class="hidden">August 25, 2024</div></div>
+    <div class="time"> 10:20 <small>Am</small> </div> 
+
     <div class="city">
-        <h2>Sydney 🇦🇺 </h2>
-        <div class="date">August 15th 2022</div>
-        <div class="time">1:48:15 AM</div>
+        <h2>London</h2>
+    </div>
+    <div class="date">
+        <div class="hidden">August 25, 2024</div>
+    </div>
+    <div class="time"> 10:20 <small>Am</small> </div>
+    
+<div class="city">
+        <h2>Canda</h2>
+    </div>
+    <div class="date">
+        <div class="hidden">August 25, 2024</div>
+    </div>
+    <div class="time"> 10:20 <small>Am</small> </div>
+    <div class="city">
+    
     </div>
     <footer>
-        This project was coded by Sana Hamdard and is on <a
+        This project was coded by <strong>Sana Hamdard</strong> and is on <a
             href="" target="_blank">GitHub</a> and
         <a href="" target="_blank">Hosted on Netlify</a>
     </footer>
