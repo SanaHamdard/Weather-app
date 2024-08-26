@@ -9,121 +9,112 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/moment-timezone/0.5.34/moment-timezone-with-data.min.js"></script>
     <title>World Clock</title>
     <style>
-       .container {
-    text-align: center;
-    max-width: 550px;
-    margin: 30px auto;
-    background-color: #708090;
-    color: black;
-    padding: 60px;
-    border-radius: 10px;
-}
+        .container {
+            text-align: center;
+            max-width: 550px;
+            margin: 30px auto;
+            background-color: #708090;
+            color: black;
+            padding: 60px;
+            border-radius: 10px;
+        }
 
-body {
-    background-color: #001f3f;
-}
+        body {
+            background-color: #001f3f;
+        }
 
-select {
-    display: block;
-    width: 100%;
-    padding: 12px;
-    border-radius: 8px;
-    color: white;
-    background-color: #001f3f;
-    margin-bottom: 20px; }
+        select {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            color: white;
+            background-color: #001f3f;
+            margin-bottom: 20px;
+        }
 
-h1 {
-    font-size: 44px;
-    font-family: 'Times New Roman', Times, serif;
-    padding: 0%;
-}
+        h1 {
+            font-size: 44px;
+            font-family: 'Times New Roman', Times, serif;
+            padding: 0%;
+        }
 
-.city-time-container {
-    margin-top: 20px; 
-    padding: 20px 0; 
-        border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
-}
+        .city-time-container {
+            margin-top: 20px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
 
-.city h2 {
-    margin: 0 auto 0px; 
-    font-size: 34px;
-    text-align: start;
-    padding: 0;
-}
+        .city h2 {
+            margin: 0 auto 0px;
+            font-size: 34px;
+            text-align: start;
+            padding: 0;
+        }
 
-.time {
-    font-size: 48px;
-    font-weight: bold;
-    text-align: end;
-    margin: auto;
-    position: relative;
-    bottom: 80px;
-}
+        .time {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: end;
+            margin: auto;
+            position: relative;
+            bottom: 80px;
+        }
 
-.time small {
-    font-size: 14px;
-    vertical-align: middle;
-}
+        .time small {
+            font-size: 14px;
+            vertical-align: middle;
+        }
 
-.date {
-    opacity: 0.5;
-    text-align: start;
-}
+        .date {
+            opacity: 0.5;
+            text-align: start;
+        }
 
-.hidden {
-    text-align: end;
-    position: relative;
-    left: -15px;
-}
+        .hidden {
+            text-align: end;
+            position: relative;
+            left: -15px;
+        }
 
-a:hover{
-    cursor: pointer;
-    color: #001f3f;
-}
+        a:hover {
+            cursor: pointer;
+            color: #001f3f;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
         <h1>World clock</h1>
-        <select>
+        <select id="city">
             <option value="">Select a city</option>
-            <option value="">London</option>
-            <option value="">New York</option>
-            <option value="">Auckland</option>
+            <option value="Europe/London">London</option>
+            <option value="America/New_York">New York</option>
+            <option value="Pacific/Auckland">Auckland</option>
         </select>
-    
-    
-        <div class="city-time-container">
-            <div class="city">
-                <h2>Los Angeles 🇺🇸</h2>
+
+        <div id="cities">
+            <div class="city-time-container" id="los-angeles">
+                <div class="city">
+                    <h2>Los Angeles 🇺🇸</h2>
+                </div>
+                <div class="date">
+                    <div class="hidden" id="los-angeles-date"></div>
+                </div>
+                <div class="time"></div>
             </div>
-            <div class="date">
-                <div class="hidden" id="first">August 25, 2024</div>
+
+            <div class="city-time-container" id="paris">
+                <div class="city">
+                    <h2>Paris 🇫🇷</h2>
+                </div>
+                <div class="date">
+                    <div class="hidden" id="paris-date"></div>
+                </div>
+                <div class="time"></div>
             </div>
-            <div class="time">10:20 <small>AM</small></div>
         </div>
-    
-        <div class="city-time-container">
-            <div class="city">
-                <h2>Paris</h2>
-            </div>
-            <div class="date">
-                <div class="hidden" id="paris">August 25, 2024</div>
-            </div>
-            <div class="time">10:20 <small>AM</small></div>
-        </div>
-    
-        <div class="city-time-container">
-            <div class="city">
-                <h2>Canada</h2>
-            </div>
-            <div class="date">
-                <div class="hidden">August 25, 2024</div>
-            </div>
-            <div class="time">10:20 <small>AM</small></div>
-        </div>
-    
 
         <footer>
             This project was coded by <strong>Sana Hamdard</strong> and is on <a href="" target="_blank">GitHub</a> and
@@ -132,23 +123,79 @@ a:hover{
     </div>
 
     <script>
-  setInterval(function () {
-        let firstDateElement = document.querySelector("#first");
-        let firstTimeElement = firstDateElement.closest(".date").nextElementSibling;
-        let firstTime = moment().tz("America/Los_Angeles");
+        let intervalId;
 
-        firstDateElement.innerHTML = firstTime.format("MMMM Do YYYY");
-        firstTimeElement.innerHTML = firstTime.format("h:mm:ss[<small>]A[</small>]");
+        function updateTimes() {
+            
+            let losAngelesTime = moment().tz("America/Los_Angeles");
+            document.querySelector("#los-angeles-date").innerHTML = losAngelesTime.format("MMMM Do YYYY");
+            document.querySelector("#los-angeles .time").innerHTML = losAngelesTime.format("h:mm:ss[<small>]A[</small>]");
 
-        let parisDateElement = document.querySelector("#paris");
-        let parisTimeElement = parisDateElement.closest(".date").nextElementSibling;
-        let parisTime = moment().tz("Europe/Paris");
+            let parisTime = moment().tz("Europe/Paris");
+            document.querySelector("#paris-date").innerHTML = parisTime.format("MMMM Do YYYY");
+            document.querySelector("#paris .time").innerHTML = parisTime.format("h:mm:ss[<small>]A[</small>]");
+        }
 
-        parisDateElement.innerHTML = parisTime.format("MMMM Do YYYY");
-        parisTimeElement.innerHTML = parisTime.format("h:mm:ss[<small>]A[</small>]");
-    }, 1000);
-</script>
+        function updateCity(event) {
+            let cityTimeZone = event.target.value;
+            let citiesElement = document.querySelector("#cities");
+
+            
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
+
+            if (cityTimeZone) {
+                let cityName = cityTimeZone.split("/")[1].replace("_", " ");
+                let cityTime = moment().tz(cityTimeZone);
+
+                citiesElement.innerHTML = `
+                    <div class="city-time-container">
+                        <div class="city">
+                            <h2>${cityName}</h2>
+                        </div>
+                        <div class="date">${cityTime.format("MMMM Do YYYY")}</div>
+                        <div class="time">${cityTime.format("h:mm:ss")} <small>${cityTime.format("A")}</small></div>
+                    </div>`;
+
+            
+                intervalId = setInterval(() => {
+                    let updatedCityTime = moment().tz(cityTimeZone);
+                    document.querySelector("#cities .city-time-container .date").innerHTML = updatedCityTime.format("MMMM Do YYYY");
+                    document.querySelector("#cities .city-time-container .time").innerHTML = updatedCityTime.format("h:mm:ss") + ' <small>' + updatedCityTime.format("A") + '</small>';
+                }, 1000);
+            } else {
+               
+                citiesElement.innerHTML = `
+                    <div class="city-time-container" id="los-angeles">
+                        <div class="city">
+                            <h2>Los Angeles 🇺🇸</h2>
+                        </div>
+                        <div class="date">
+                            <div class="hidden" id="los-angeles-date"></div>
+                        </div>
+                        <div class="time"></div>
+                    </div>
+
+                    <div class="city-time-container" id="paris">
+                        <div class="city">
+                            <h2>Paris 🇫🇷</h2>
+                        </div>
+                        <div class="date">
+                            <div class="hidden" id="paris-date"></div>
+                        </div>
+                        <div class="time"></div>
+                    </div>`;
+
+                updateTimes();
+                intervalId = setInterval(updateTimes, 1000);
+            }
+        }
+
+        updateTimes();
+
+        document.querySelector("#city").addEventListener("change", updateCity);
+    </script>
 </body>
 
 </html>
-
