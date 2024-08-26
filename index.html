@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -74,11 +73,16 @@
             cursor: pointer;
             color: #001f3f;
         }
+
+        h3 {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
+        <h3>"Time whispers, 'I am always running; don't wait, for I never pause. So start, before I slip away.'" </h3>
         <h1>World Clock</h1>
         <select id="city">
             <option value="">Select a city</option>
@@ -92,18 +96,14 @@
                 <div class="city">
                     <h2>Los Angeles 🇺🇸</h2>
                 </div>
-                <div class="date">
-                    <div id="los-angeles-date"></div>
-                </div>
+                <div class="date" id="los-angeles-date"></div>
                 <div class="time" id="los-angeles-time"></div>
             </div>
             <div class="city-time-container" id="paris">
                 <div class="city">
                     <h2>Paris 🇫🇷</h2>
                 </div>
-                <div class="date">
-                    <div id="paris-date"></div>
-                </div>
+                <div class="date" id="paris-date"></div>
                 <div class="time" id="paris-time"></div>
             </div>
         </div>
@@ -115,20 +115,24 @@
     <script>
         let intervalId;
 
-        function updateTimes() {
+       function updateTimes() {
             let losAngelesTime = moment().tz("America/Los_Angeles");
-            document.querySelector("#los-angeles-date").innerHTML = losAngelesTime.format("MMMM Do YYYY");
+            document.querySelector("#los-angeles-date").innerHTML = losAngelesTime.format("MMMM Do, YYYY");
             document.querySelector("#los-angeles-time").innerHTML = losAngelesTime.format("h:mm:ss[<small>]A[</small>]");
 
             let parisTime = moment().tz("Europe/Paris");
-            document.querySelector("#paris-date").innerHTML = parisTime.format("MMMM Do YYYY");
+            document.querySelector("#paris-date").innerHTML = parisTime.format("MMMM Do, YYYY");
             document.querySelector("#paris-time").innerHTML = parisTime.format("h:mm:ss[<small>]A[</small>]");
         }
+
+        setInterval(updateTimes, 1000);
+
 
         function updateCity(event) {
             let cityTimeZone = event.target.value;
             let citiesElement = document.querySelector("#cities");
 
+            
             if (intervalId) {
                 clearInterval(intervalId);
             }
@@ -148,42 +152,41 @@
                         </div>
                         <div class="date">${cityTime.format("MMMM Do YYYY")}</div>
                         <div class="time">${cityTime.format("h:mm:ss")} <small>${cityTime.format("A")}</small></div>
+                        <a href="#" onclick="showDefaultCities()">All cities</a> <!-- Added link -->
                     </div>`;
 
+                
                 intervalId = setInterval(() => {
                     let updatedCityTime = moment().tz(cityTimeZone);
                     document.querySelector("#cities .city-time-container .date").innerHTML = updatedCityTime.format("MMMM Do YYYY");
                     document.querySelector("#cities .city-time-container .time").innerHTML = updatedCityTime.format("h:mm:ss") + ' <small>' + updatedCityTime.format("A") + '</small>';
                 }, 1000);
             } else {
-                // Show default cities
-                citiesElement.innerHTML = `
-                    <div class="city-time-container" id="los-angeles">
-                        <div class="city">
-                            <h2>Los Angeles 🇺🇸</h2>
-                        </div>
-                        <div class="date">
-                            <div id="los-angeles-date"></div>
-                        </div>
-                        <div class="time" id="los-angeles-time"></div>
-                    </div>
-                    <div class="city-time-container" id="paris">
-                        <div class="city">
-                            <h2>Paris 🇫🇷</h2>
-                        </div>
-                        <div class="date">
-                            <div id="paris-date"></div>
-                        </div>
-                        <div class="time" id="paris-time"></div>
-                    </div>`;
-
-                updateTimes();
-                intervalId = setInterval(updateTimes, 1000);
+                showDefaultCities();
             }
         }
 
-        updateTimes();
+        function showDefaultCities() {
+            document.querySelector("#cities").innerHTML = `
+                <div class="city-time-container" id="los-angeles">
+                    <div class="city">
+                        <h2>Los Angeles 🇺🇸</h2>
+                    </div>
+                    <div class="date" id="los-angeles-date"></div>
+                    <div class="time" id="los-angeles-time"></div>
+                </div>
+                <div class="city-time-container" id="paris">
+                    <div class="city">
+                        <h2>Paris 🇫🇷</h2>
+                    </div>
+                    <div class="date" id="paris-date"></div>
+                    <div class="time" id="paris-time"></div>
+                </div>`;
+            updateTimes();
+            intervalId = setInterval(updateTimes, 1000);
+        }
 
+        updateTimes();
         document.querySelector("#city").addEventListener("change", updateCity);
     </script>
 </body>
